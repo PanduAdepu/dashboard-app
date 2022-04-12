@@ -6,8 +6,12 @@ import {
     ListItemIcon,
     ListItemText
 } from '@mui/material'
+import {Accordion, AccordionSummary, AccordionDetails, Typography} from '@mui/material';
+
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
+import AddIcon from '@mui/icons-material/Add';
+
 import { makeStyles, createStyles } from "@mui/styles";
 import { createSvgIcon } from '@mui/material/utils';
 
@@ -64,7 +68,9 @@ const Drawer = () => {
     const itemsList = [
         {
             text: 'Dashboard',
-            icon: <HomeOutlinedIcon />
+            icon: <HomeOutlinedIcon />,
+            button1: "Employee",
+            button2: "Manager"
         },
         {
             text: 'Loans',
@@ -92,12 +98,27 @@ const Drawer = () => {
     <MUIDrawer variant="permanent" open className={classes.muiDrawer}>
         <List>
         {itemsList.map((item, index) => {
-            const { text, icon } = item;
+            const { text, icon, button1, button2 } = item;
             return (
-            <ListItem button key={text}>
-                {icon && <ListItemIcon sx={{minWidth: "35px"}}>{icon}</ListItemIcon>}
-                <ListItemText primary={text} />
-            </ListItem>
+            <Accordion>
+                <AccordionSummary
+                expandIcon={<AddIcon />}
+                aria-controls="panel1a-content"
+                id="panel1a-header">
+                    <ListItem button key={text}>
+                        {icon && <ListItemIcon sx={{minWidth: "35px"}}>{icon}</ListItemIcon>}
+                        <ListItemText primary={text} />
+                    </ListItem>
+                </AccordionSummary>
+                <AccordionDetails>
+                    {
+                        button1 && <Typography>{button1}</Typography> 
+                    }
+                    {   
+                        button2 && <Typography>{button2}</Typography>
+                    }
+                </AccordionDetails>
+            </Accordion>
         )})}
         </List>
     </MUIDrawer>
