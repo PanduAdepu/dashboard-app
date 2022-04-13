@@ -1,27 +1,22 @@
-import React from 'react';
-import './App.css';
+// components
 import Drawer from './components/Drawer';
 import MiniDrawer from './components/NewDrawer'
 import Employee from './components/employee/Employee';
+import { Grid } from '@mui/material';
 
-import { makeStyles, createStyles } from "@mui/styles";
-
-
-const useStyles = makeStyles((theme?: any) => createStyles({
-    container: {
-        display: "flex"
-    }
-}));
+import "./App.css";
 
 function App() {
-  const classes = useStyles()
   return (
-    <div className="App">
-      <div className={classes.container}>
-        <Drawer />
-        <Employee />
-        {/* <MiniDrawer /> */}
-      </div>
+    <div className="App" style={{}}>
+      <Grid container>
+          <Grid item xs={2.3}>
+            <Drawer />
+          </Grid>
+          <Grid item xs={9.7} sx={{background: "#F2F2F2", px: 5, height: "100vh"}}>
+            <Employee />
+          </Grid>
+      </Grid>
     </div>
   );
 }
