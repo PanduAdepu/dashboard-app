@@ -5,9 +5,12 @@ import DsrDetails from './dsrDetails.jsx/DsrDetails'
 import { Box, Grid } from '@mui/material'
 import EligibilityDetails from './eligibility/EligibilityDetails'
 import TeamComponent from './teamMembers/TeamComponent'
+import QucikLinks from './quickLinks/QucikLinks'
+import PendingAction from './pendingAction/PendingAction'
 
 const Employee = () => {
   return (
+    <>
     <div className='Employee'>
         <Header />
         <EmployeeDetails />
@@ -22,7 +25,16 @@ const Employee = () => {
             <TeamComponent />
           </Grid>
         </Grid>
+        <Grid container>
+          <Grid item xs={6} sx={{background: "white"}}>
+            <QucikLinks />
+          </Grid>
+          <Grid item xs={6} sx={{background: "white"}}>
+            <PendingAction />
+          </Grid>
+        </Grid>
     </div>
+    </>
   )
 }
 

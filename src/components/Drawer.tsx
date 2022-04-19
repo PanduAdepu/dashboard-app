@@ -9,13 +9,18 @@ import {
     ButtonGroup,
     Button
 } from '@mui/material'
-import {AccordionSummary, AccordionDetails, Typography} from '@mui/material';
-import MuiAccordion from "@mui/material/Accordion";
+import { Typography} from '@mui/material';
+import MuiAccordionSummary, {
+    AccordionSummaryProps,
+  } from '@mui/material/AccordionSummary';
+  import MuiAccordionDetails from '@mui/material/AccordionDetails';
+import MuiAccordion, { AccordionProps } from "@mui/material/Accordion";
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import SchoolOutlinedIcon from '@mui/icons-material/SchoolOutlined';
 import AddIcon from '@mui/icons-material/Add';
 
 import { withStyles } from "@mui/styles";
+import { styled } from '@mui/material/styles';
 import { createSvgIcon } from '@mui/material/utils';
 
 import Mashreq_logo from './Mashreq_Logo.png'
@@ -62,79 +67,186 @@ const SelfserviceIcon = createSvgIcon(
     </>,
     'selfservice'
 )
-const Accordion = withStyles({
-    root: {
-      "&$expanded": {
-        margin: "auto"
-      }
+// const Accordion = withStyles({
+//     root: {
+//       "&$expanded": {
+//         margin: "auto"
+//       }
+//     },
+//     expanded: {}
+//   })(MuiAccordion);
+
+const Accordion = styled((props: AccordionProps) => (
+    <MuiAccordion disableGutters elevation={0} square {...props} />
+  ))(() => ({
+    border: `1px solid #DDE0E9`,
+    '&:not(:last-child)': {
+      borderTop: 0,
     },
-    expanded: {}
-  })(MuiAccordion);
+    '&:before': {
+      display: 'none',
+    },
+  }));
+
+const AccordionSummary = styled((props: AccordionSummaryProps) => (
+    <MuiAccordionSummary
+      {...props}
+    />
+  ))(({ theme }) => ({
+    '& .MuiAccordionSummary-content': {
+      marginLeft: theme.spacing(1),
+    },
+  }));
+
+const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+    padding: theme.spacing(2),
+    borderBot: '1px solid rgba(0, 0, 0, .125)',
+}));
+
 
 const Drawer = () => {
+    interface Ihidden {
+        0: boolean,
+        1: boolean,
+        2: boolean,
+        3: boolean,
+        4: boolean,
+        5: boolean
+    }
+    const [hidden, setHidden] = React.useState<Ihidden>({
+        0: true,
+        1: false,
+        2: false,
+        3: false,
+        4: false,
+        5: false,
+    })
     const itemsList = [
         {
             text: 'Dashboard',
             icon: <HomeOutlinedIcon sx={{fontSize: 20}}/>,
             button1: "Employee",
-            button2: "Manager"
+            button2: "Manager",
+            hide: hidden[0]
         },
         {
             text: 'Loans',
-            icon: <MoneyIcon sx={{fontSize: 25}}/>
+            icon: <MoneyIcon sx={{fontSize: 25}}/>,
+            hide: hidden[1]
         },
         {
             text: 'Education Allowance',
-            icon: <SchoolOutlinedIcon sx={{fontSize: 20}}/>
+            icon: <SchoolOutlinedIcon sx={{fontSize: 20}}/>,
+            hide: hidden[2]
         },
         {
             text: 'Employee Expenses CLaims',
-            icon:<EmployIcon sx={{fontSize: 20}}/>
+            icon:<EmployIcon sx={{fontSize: 20}}/>,
+            hide: hidden[3]
         },
         {
             text: "Non LPD Claims",
-            icon:<NonLpdIcon sx={{fontSize: 20}}/>
+            icon:<NonLpdIcon sx={{fontSize: 20}}/>,
+            hide: hidden[4]
         },
         {
             text: "Self Service",
-            icon:<SelfserviceIcon sx={{fontSize: 20}}/>
+            icon:<SelfserviceIcon sx={{fontSize: 20}}/>,
+            hide: hidden[5]
         }
     ];
-    
     const [expanded, setExpanded] = React.useState<string | false>("panel1");
-    const handleChange = (panel: string) => (
+    const handleChange = (panel: string, index: number) => (
         event: React.ChangeEvent<{}>,
         newExpanded: boolean
       ) => {
         setExpanded(newExpanded ? panel : false);
-      };
+        console.log(index);
+        index == 0 && 
+        setHidden({
+            0: true,
+            1: false,
+            2: false,
+            3: false,
+            4: false,
+            5: false,
+        })
+        index == 1 &&
+        setHidden({
+            0: false,
+            1: true,
+            2: false,
+            3: false,
+            4: false,
+            5: false,
+        })
+        index == 2 &&
+        setHidden({
+            0: false,
+            1: false,
+            2: true,
+            3: false,
+            4: false,
+            5: false,
+        })
+        index == 3 &&
+        setHidden({
+            0: false,
+            1: false,
+            2: false,
+            3: true,
+            4: false,
+            5: false,
+        })
+        index == 4 &&
+        setHidden({
+            0: false,
+            1: false,
+            2: false,
+            3: false,
+            4: true,
+            5: false,
+        })
+        index == 5 &&
+        setHidden({
+            0: false,
+            1: false,
+            2: false,
+            3: false,
+            4: false,
+            5: true,
+        })
+    };
+
   return (
-    <MUIDrawer variant="permanent" open>
+    <MUIDrawer variant="permanent" open >
         <Grid container justifyContent="center">
             <Box component="img" src={Mashreq_logo} alt='Mashreq_logo' sx={{mt:5, width: "200px", justify:"center"}}/>
         </Grid>
         <List sx={{mt:5}}>
         {itemsList.map((item, index) => {
-            const { text, icon, button1, button2 } = item;
+            const { text, icon, button1, button2, hide} = item;
             return (
-            <Accordion elevation={0}
-            expanded={expanded === `panel${index+1}`}
-            onChange={handleChange(`panel${index+1}`)}>
-                <AccordionSummary
-                expandIcon={<AddIcon sx={{ fontSize: 15 }}/>}
+            <Accordion
+                elevation={0}
+                expanded={expanded === `panel${index+1}`}
+                onChange={handleChange(`panel${index+1}`, index)} 
                 >
+                <AccordionSummary
+                expandIcon={!hide && <AddIcon sx={{ fontSize: 15 }}/>}
+                style={{background: hide ? "linear-gradient(90deg, rgba(255, 94, 0, 0) 12.55%, rgba(255, 94, 0, 0.150034) 100%)" : "none"}}>
                     <ListItem button key={text} sx={{p:0}}>
-                        {icon && <ListItemIcon sx={{minWidth: "35px"}}>{icon}</ListItemIcon>}
-                        <ListItemText primary={text} sx={{width: "175px"}}/>
+                        {icon && <ListItemIcon sx={{minWidth: "35px", color: hide ? "#FF5E00" : "#6D7278"}}>{icon}</ListItemIcon>}
+                        <ListItemText primary={text} sx={{width: "175px", color: hide ? "#FF5E00" : "#6D7278", fontWeight: "700"}}/>
                     </ListItem>
                 </AccordionSummary>
                 <AccordionDetails>
                     <ButtonGroup disableElevation variant="outlined">
                     {
-                        button1 && <Button>{button1}</Button> 
+                        button1 && <Button sx={{color: "#FF5E00", textTransform: "capitalize", borderRadius: "20px", borderColor: "#F8F9FC"}}>{button1}</Button> 
                     }
                     {   
-                        button2 && <Button disabled>{button2}</Button>
+                        button2 && <Button sx={{color: "#BDBDBD",textTransform: "capitalize", borderRadius: "20px", background: "#F8F9FC", border: "none"}}>{button2}</Button>
                     }
                     </ButtonGroup>
                 </AccordionDetails>

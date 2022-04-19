@@ -9,7 +9,21 @@ const TeamComponent = () => {
         <h3>You Team </h3>
         <Typography sx={{fontSize:"12px", position:"absolute", top:"50%", transform: "translate(0%, -50%)",right: "20px"}}>15 Members</Typography>
       </Box>
-      <Box sx={{overflowY: "scroll", height: "255px"}}>
+      <Box sx={{overflowY: "auto", height: "255px", mr: .5,
+        '&::-webkit-scrollbar': {
+            width: '0.3em'
+          },
+        '&::-webkit-scrollbar-track': {
+            boxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+            webkitBoxShadow: 'inset 0 0 6px rgba(0,0,0,0.00)',
+            borderRadius: "10px",
+            backgroundColor: '#F8F9FC',
+          },
+        '&::-webkit-scrollbar-thumb': {
+            backgroundColor: '#DDE0E9',
+            borderRadius: "10px",
+          }
+      }}>
         <Member name="John Doe" role="Vide President" />
         <Member name="Ramkumar Rajkumar" role="Manager" />
         <Member name="Manoj Kumar" role="Assistant Manager" />
